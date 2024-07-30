@@ -1,4 +1,4 @@
-import { addHinoHarpa, getHinosHarpa, getHinoByNumero } from '../services/hinosservices.js';
+import { addHinoHarpa, getHinosHarpa, getHinoByNumero, getHinosGeral } from '../services/hinosservices.js';
 
 export const createHinoHarpa = async (request, response) => {
   const { numero, titulo, coro, verses } = request.body;
@@ -35,5 +35,15 @@ export const fetchHinoHarpaByNumero = async (request, response) => {
   } catch (err) {
     console.error('Error:', err);
     response.status(500).send('Error fetching hino');
+  }
+};
+
+export const fetchHinosGeral = async (request, response) => {
+  try {
+    const hinario = await getHinosGeral();
+    response.json(hinario);
+  } catch (err) {
+    console.error('Error:', err);
+    response.status(500).send('Error fetching hinos');
   }
 };

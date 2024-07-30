@@ -32,3 +32,12 @@ export const fetchHinoByNumero = async (numero) => {
   client.close();
   return hino;
 };
+
+export const fetchHinosGeral = async () => {
+  const { client, db } = await dbConnections.connectMongoDB();
+  const hinosCollection = db.collection('hinario_geral');
+  const hinario = await hinosCollection.find({}).toArray();
+
+  client.close();
+  return hinario;
+};
