@@ -14,12 +14,12 @@ return connection;
 }
 
 async function connectMongoDB() {
-  const mongoUrl = 'mongodb://localhost:27017';
+  const mongoUrl = 'mongodb+srv://devlucasdeangelo:aKICD4vVs7H5cxG9@adoracaodb.pnlnmh0.mongodb.net/';
   const client = new MongoClient(mongoUrl)
 
   try {
     await client.connect();
-    const db = client.db('harpa_crista');
+    const db = client.db('Hinos');
     return { client, db };
   } catch (err) {
     console.error('MongoDB connection error:', err);
