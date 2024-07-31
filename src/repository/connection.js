@@ -14,7 +14,7 @@ return connection;
 }
 
 async function connectMongoDB() {
-  const mongoUrl = 'mongodb+srv://devlucasdeangelo:aKICD4vVs7H5cxG9@adoracaodb.pnlnmh0.mongodb.net/';
+  const mongoUrl = 'mongodb://mongo:YjodjGvDkHCipIzmIEVUIJgmVMONEhKI@monorail.proxy.rlwy.net:30091/';
   const client = new MongoClient(mongoUrl)
 
   try {
