@@ -1,4 +1,5 @@
 import dbConnections from '../repository/connection.js';
+import { ObjectId } from 'mongodb';
 
 export const insertHinoHarpa = async (numero, titulo, coro, verses) => {
   const { client, db } = await dbConnections.connectMongoDB();
@@ -41,3 +42,19 @@ export const fetchHinosGeral = async () => {
   client.close();
   return hinario;
 };
+
+export const fetchHinoById = async (hinoId) => {
+  const { client, db } = await dbConnections.connectMongoDB();
+  const hinosCollection = db.collection('hinario_geral');
+  try {
+    const hino = await hinosCollection.findOne({ _id: new ObjectId(hinoId) });
+    if (!hino) throw new Error("Hino não encontrado no MongoDB");
+    return hino;
+  } catch (error) {
+    console.error("Erro ao buscar hino no MongoDB:", error.message);
+    throw error;
+  } finally {
+    client.close();
+  }
+};
+

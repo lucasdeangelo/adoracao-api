@@ -1,4 +1,5 @@
 import db from '../repository/connection.js';
+import { fetchHinoById } from './dbservices.js';
 
 async function createGroup(name, local, typeGroup, regenteId) {
     const conn = await db.connect();
@@ -50,4 +51,61 @@ async function createGroup(name, local, typeGroup, regenteId) {
     }
 }
 
-export default { createGroup };
+export const addHinoToGrupo = async (grupoId, hinoId) => {
+    const conn = await db.connect();
+
+    try {
+        // Verifique se o grupo existe no MySQL
+        const [grupo] = await conn.query("SELECT * FROM grupo WHERE id = ?", [grupoId]);
+        if (grupo.length === 0) {
+            throw new Error("Grupo não encontrado");
+        }
+
+        // Verifique se o hino existe no MongoDB
+        const hino = await fetchHinoById(hinoId);
+        if (!hino) {
+            throw new Error("Hino não encontrado no MongoDB");
+        }
+
+        // Associe o hino ao grupo na tabela hinario_grupo
+        const sql = "INSERT INTO hinario_grupo (grupo_id, hino_id) VALUES (?, ?)";
+        await conn.query(sql, [grupoId, hinoId]);
+
+        return { message: 'Hino adicionado ao grupo com sucesso' };
+    } catch (error) {
+        throw error;
+    } finally {
+        conn.end();
+    }
+};
+
+export const getHinosDoGrupo = async (grupoId) => {
+    const conn = await db.connect();
+    let hinos = [];
+
+    try {        
+        const [rows] = await conn.query("SELECT hino_id FROM hinario_grupo WHERE grupo_id = ?", [grupoId]);
+        
+        if (rows.length === 0) {
+            return { message: "Nenhum hino encontrado para este grupo." };
+        }
+       
+        for (const row of rows) {
+            const hino = await fetchHinoById(row.hino_id);
+            if (hino) {
+                hinos.push(hino);
+            }
+        }
+
+        return hinos;
+    } catch (error) {
+        console.error("Erro ao buscar hinos do grupo:", error.message);
+        throw error;
+    } finally {
+        conn.end();
+    }
+};
+
+
+
+export default { createGroup, addHinoToGrupo, getHinosDoGrupo };
