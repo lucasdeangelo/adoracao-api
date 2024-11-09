@@ -1,5 +1,6 @@
 import express from "express";
 import groupService from "../services/gruposervices.js";
+import { removeHinoFromGrupo } from "../services/gruposervices.js";
 
 const route = express.Router();
 
@@ -43,5 +44,16 @@ route.get('/:id_grupo/hinos', async (req, res) => {
     res.status(500).send({ message: `Erro ao buscar hinos do grupo: ${error.message}` });
   }
 });
+
+route.delete('/:id_grupo/hinos/:id_hino', async (req, res) => {
+  try {
+    const { id_grupo, id_hino } = req.params;
+    const result = await removeHinoFromGrupo(id_grupo, id_hino);
+    res.status(200).send(result);
+  } catch (error) {
+    res.status(500).send({ message: `Erro ao remover hino do grupo: ${error.message}` });
+  }
+});
+
 
 export default route;

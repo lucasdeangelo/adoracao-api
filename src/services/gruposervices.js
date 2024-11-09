@@ -99,4 +99,25 @@ export const getHinosDoGrupo = async (id_grupo) => {
     }
 };
 
-export default { createGroup, addHinoToGrupo, getHinosDoGrupo };
+export const removeHinoFromGrupo = async (id_grupo, id_hino) => {
+    const conn = await db.connect();
+  
+    try {
+      const sql = "DELETE FROM hinario_grupo WHERE grupo_id = ? AND hino_id = ?";
+      const [result] = await conn.query(sql, [id_grupo, id_hino]);
+  
+      if (result.affectedRows === 0) {
+        throw new Error("Hino não encontrado no grupo.");
+      }
+  
+      return { message: 'Hino removido do grupo com sucesso' };
+    } catch (error) {
+      console.error("Erro ao remover hino do grupo:", error.message);
+      throw error;
+    } finally {
+      conn.end();
+    }
+  };
+  
+
+export default { createGroup, addHinoToGrupo, getHinosDoGrupo, removeHinoFromGrupo };
