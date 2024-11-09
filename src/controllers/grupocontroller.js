@@ -22,12 +22,12 @@ route.post('/', async (request, response) => {
   }
 });
 
-route.post('/:grupoId/hinos', async (req, res) => {
+route.post('/:id_grupo/hinos', async (req, res) => {
   try {
-    const { grupoId } = req.params;
+    const { id_grupo } = req.params;
     const { hinoId } = req.body;
 
-    const result = await groupService.addHinoToGrupo(grupoId, hinoId);
+    const result = await groupService.addHinoToGrupo(id_grupo, hinoId);
     res.status(201).send(result);
   } catch (error) {
     res.status(500).send({ message: `Erro ao adicionar hino ao grupo: ${error.message}` });

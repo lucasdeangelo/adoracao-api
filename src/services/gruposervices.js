@@ -47,11 +47,11 @@ async function createGroup(name, local, typeGroup, regenteId) {
     }
 }
 
-export const addHinoToGrupo = async (grupoId, hinoId) => {
+export const addHinoToGrupo = async (id_grupo, hinoId) => {
     const conn = await db.connect();
 
     try {        
-        const [grupo] = await conn.query("SELECT * FROM grupo WHERE id = ?", [grupoId]);
+        const [grupo] = await conn.query("SELECT * FROM grupo WHERE id = ?", [id_grupo]);
         if (grupo.length === 0) {
             throw new Error("Grupo não encontrado");
         }
@@ -62,7 +62,7 @@ export const addHinoToGrupo = async (grupoId, hinoId) => {
         }
         
         const sql = "INSERT INTO hinario_grupo (grupo_id, hino_id) VALUES (?, ?)";
-        await conn.query(sql, [grupoId, hinoId]);
+        await conn.query(sql, [id_grupo, hinoId]);
 
         return { message: 'Hino adicionado ao grupo com sucesso' };
     } catch (error) {
