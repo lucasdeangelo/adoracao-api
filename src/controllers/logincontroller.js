@@ -8,11 +8,9 @@ route.post('/', async(request, response) =>{
     try{
         const users = await db.loginUser(email, password);
         if(users.length > 0){
-            const id_user = users[0].id_usuario;
-            const email_user = users[0].email
-            const userType = users[0].tipo_usuario;
+            const { id_usuario: id_user, email: email_user, tipo_usuario: userType, id_grupo } = users[0];
             const token = generateToken(id_user, email_user)
-            response.status(200).send({message:'Login efeito efeituado com sucesso', token, id_user, userType})
+            response.status(200).send({message:'Login efeito efeituado com sucesso', token, id_user, userType, id_grupo: id_grupo || null})
         } else{
             response.status(401).send({message:'Login incorreto'})
         }
