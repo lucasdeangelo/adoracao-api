@@ -7,6 +7,7 @@ CREATE TABLE usuarios (
     nome VARCHAR(100) NOT NULL,
     email VARCHAR(100) UNIQUE NOT NULL,
     senha VARCHAR(16) NOT NULL,
+    data_nasc DATE,
     tipo_usuario ENUM('Adorador', 'Regente', 'Cantor', 'Músico', 'Componente') NOT NULL
 );
 
@@ -44,14 +45,6 @@ CREATE TABLE eventos_grupo (
     FOREIGN KEY (grupo_id) REFERENCES grupo(id)
 );
 
-CREATE TABLE componentes_grupo (
-    id INT PRIMARY KEY AUTO_INCREMENT,
-    grupo_id INT NOT NULL,
-    componente_id INT NOT NULL,
-    FOREIGN KEY (grupo_id) REFERENCES grupo(id),
-    FOREIGN KEY (componente_id) REFERENCES usuarios(id_usuario)
-);
-
 CREATE TABLE musicos (
     id INT PRIMARY KEY AUTO_INCREMENT,
     usuario_id INT NOT NULL,
@@ -74,14 +67,6 @@ CREATE TABLE regentes (
     FOREIGN KEY (usuario_id) REFERENCES usuarios(id_usuario)
 );
 
-CREATE TABLE regentes_grupo (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    regente_id INT NOT NULL,
-    grupo_id INT NOT NULL,
-    FOREIGN KEY (regente_id) REFERENCES regentes(regente_id),
-    FOREIGN KEY (grupo_id) REFERENCES grupo(id)
-);
-
 CREATE TABLE componentes (
     componente_id INT PRIMARY KEY AUTO_INCREMENT,
     usuario_id INT NOT NULL,
@@ -89,9 +74,13 @@ CREATE TABLE componentes (
     FOREIGN KEY (usuario_id) REFERENCES usuarios(id_usuario)
 );
 
-INSERT INTO usuarios (nome, email, senha, tipo_usuario) VALUES
-('Lucas', 'lucas@gmail.com', '123', 'Adorador'),
-('Pedro', 'musico@gmail.com', '123', 'Músico'),
-('Neusa', 'cantor@gmail.com', '123', 'Cantor'),
-('Angelita', 'regente@gmail.com', '123', 'Regente'),
-('Levi', 'comp@gmail.com', '123', 'Componente');
+ALTER TABLE usuarios
+ADD COLUMN id_grupo INT DEFAULT NULL,
+ADD FOREIGN KEY (id_grupo) REFERENCES grupo(id);
+
+INSERT INTO usuarios (nome, email, senha, data_nasc, tipo_usuario, id_grupo) VALUES
+('Lucas', 'lucas@gmail.com', '123', '2004-10-23', 'Adorador', null),
+('Pedro', 'musico@gmail.com', '123', '2004-07-23', 'Músico', null),
+('Neusa', 'cantor@gmail.com', '123', '1980-10-23', 'Cantor', null),
+('Angelita', 'regente@gmail.com', '123', '1980-02-05', 'Regente', null),
+('Levi', 'comp@gmail.com', '123', '2014-10-23', 'Componente', null);
