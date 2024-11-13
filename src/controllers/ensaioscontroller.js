@@ -1,5 +1,5 @@
 import express from 'express';
-import { createEnsaio, getEnsaiosDoGrupo } from '../services/ensaiosservices.js';
+import { createEnsaio, getEnsaiosDoGrupo, removeEnsaio } from '../services/ensaiosservices.js';
 
 const route = express.Router();
 
@@ -23,6 +23,17 @@ route.get('/:id_grupo', async (req, res) => {
         res.status(200).json(ensaios);
     } catch (error) {
         res.status(500).json({ message: `Erro ao buscar ensaios do grupo: ${error.message}` });
+    }
+});
+
+route.delete('/:id', async (req, res) => {
+    const { id } = req.params;
+
+    try {
+        const response = await removeEnsaio(id);
+        res.status(200).json({ message: "Ensaio deletado com sucesso" });
+    } catch (error) {
+        res.status(500).send({ message: `Erro ao deletar ensaio: ${error.message}` });
     }
 });
 

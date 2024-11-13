@@ -32,3 +32,18 @@ export const getEnsaiosDoGrupo = async (id_grupo) => {
         conn.end();
     }
 };
+
+export const removeEnsaio = async (id) => {
+    const conn = await db.connect();
+    try {        
+        const deleteEnsaioSql = "DELETE FROM ensaios_grupo WHERE id = ?";
+        await conn.query(deleteEnsaioSql, [id]);
+
+        return { message: "Ensaio deletado com sucesso" };
+    } catch (error) {
+        console.error("Erro ao deletar ensaio:", error);
+        throw error;
+    } finally {
+        conn.end();
+    }
+};
