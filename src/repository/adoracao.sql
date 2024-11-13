@@ -30,10 +30,12 @@ CREATE TABLE hinario_grupo (
 CREATE TABLE ensaios_grupo (
     id INT PRIMARY KEY AUTO_INCREMENT,
     grupo_id INT NOT NULL,
+    hino_id INT,
     data DATETIME NOT NULL,
-    descricao TEXT,
+    descricao VARCHAR(255),
     local VARCHAR(255),
-    FOREIGN KEY (grupo_id) REFERENCES grupo(id)
+    FOREIGN KEY (grupo_id) REFERENCES grupo(id),
+    FOREIGN KEY (hino_id) REFERENCES hinario_grupo(id) 
 );
 
 CREATE TABLE eventos_grupo (
