@@ -5,6 +5,7 @@ import { createHinoHarpa, fetchAllHinosHarpa, fetchHinoHarpaByNumero, fetchHinos
 import grupoController from "./controllers/grupocontroller.js";
 import ensaioRouter from './controllers/ensaioscontroller.js';
 import eventoRouter from './controllers/eventoscontroller.js';
+import favoritosRouter from './controllers/favoritoscontroller.js';
 
 const routes = express.Router()
 routes.use('/login', loginUser);
@@ -16,5 +17,6 @@ routes.use('/hinosHarpa/:numero', fetchHinoHarpaByNumero);
 routes.use('/hinario', fetchHinosGeral);
 routes.use('/ensaios', ensaioRouter);
 routes.use('/eventos', eventoRouter);
+routes.use('/favoritos', favoritosRouter);
 
 export default routes;

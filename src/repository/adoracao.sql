@@ -76,6 +76,14 @@ CREATE TABLE componentes (
     FOREIGN KEY (usuario_id) REFERENCES usuarios(id_usuario)
 );
 
+CREATE TABLE favoritos (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    id_usuario INT NOT NULL,
+    hino_id VARCHAR(50) NOT NULL,
+    tipo_hino ENUM('Harpa', 'Geral') NOT NULL,
+    FOREIGN KEY (id_usuario) REFERENCES usuarios(id_usuario)
+);
+
 ALTER TABLE usuarios
 ADD COLUMN id_grupo INT DEFAULT NULL,
 ADD FOREIGN KEY (id_grupo) REFERENCES grupo(id);
@@ -86,3 +94,5 @@ INSERT INTO usuarios (nome, email, senha, data_nasc, tipo_usuario, id_grupo) VAL
 ('Neusa', 'cantor@gmail.com', '123', '1980-10-23', 'Cantor', null),
 ('Angelita', 'regente@gmail.com', '123', '1980-02-05', 'Regente', null),
 ('Levi', 'comp@gmail.com', '123', '2014-10-23', 'Componente', null);
+
+SELECT hino_id, tipo_hino FROM favoritos WHERE id_usuario = 1;

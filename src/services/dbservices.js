@@ -58,3 +58,20 @@ export const fetchHinoById = async (hinoId) => {
   }
 };
 
+export const fetchHinoHarpaById = async (id) => {
+  const { client, db } = await dbConnections.connectMongoDB();
+  const hinosCollection = db.collection('hinos');
+  
+  try {
+    const hino = await hinosCollection.findOne({ _id: new ObjectId(id) });
+    if (!hino) {
+      throw new Error(`Hino da Harpa com ID ${id} não encontrado.`);
+    }
+    return hino;
+  } catch (error) {
+    console.error("Erro ao buscar hino da Harpa pelo ObjectId:", error.message);
+    throw error;
+  } finally {
+    client.close();
+  }
+};
