@@ -1,6 +1,6 @@
-DROP DATABASE IF EXISTS Adoracao;
-CREATE DATABASE Adoracao;
-USE Adoracao;
+DROP DATABASE IF EXISTS AdoracaoApp;
+CREATE DATABASE AdoracaoApp;
+USE AdoracaoApp;
 
 CREATE TABLE usuarios (
     id_usuario INT AUTO_INCREMENT PRIMARY KEY NOT NULL,

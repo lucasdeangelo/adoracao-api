@@ -1,25 +1,33 @@
 import mysql2 from "mysql2/promise";
 import { MongoClient } from "mongodb";
+import dotenv from "dotenv";
+
+dotenv.config();
 
 async function connect() {
   const connection = await mysql2.createConnection({
-    host: 'localhost',
-    password: '',
-    port: '3306',
-    database: 'Adoracao',
-    user: 'root'
-  })
+    host: process.env.SQL_HOST,
+    password: process.env.SQL_PASSWORD,
+    port: process.env.SQL_PORT,
+    database: process.env.SQL_DB,
+    user: process.env.SQL_USER,
+    port: process.env.SQL_PORT || 3306,
+    ssl: process.env.SQL_SSL ? { rejectUnauthorized: true } : null,
+    waitForConnections: true,
+    connectionLimit: 10,
+    queueLimit: 0
+  });
 
-return connection;
+  return connection;
 }
 
 async function connectMongoDB() {
-  const mongoUrl = 'mongodb://localhost:27017';
+  const mongoUrl = process.env.MONGO_URI;
   const client = new MongoClient(mongoUrl)
 
   try {
     await client.connect();
-    const db = client.db('harpa_crista');
+    const db = client.db(process.env.MONGO_DB_NAME);
     return { client, db };
   } catch (err) {
     console.error('MongoDB connection error:', err);

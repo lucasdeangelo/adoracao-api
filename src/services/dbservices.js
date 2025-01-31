@@ -1,9 +1,15 @@
 import dbConnections from '../repository/connection.js';
 import { ObjectId } from 'mongodb';
+import dotenv from 'dotenv';
+
+dotenv.config(); 
+
+const COLLECTION_HARPA = process.env.COLLECTION_HARPA;
+const COLLECTION_HINARIO_GERAL = process.env.COLLECTION_HINARIO_GERAL;
 
 export const insertHinoHarpa = async (numero, titulo, coro, verses) => {
   const { client, db } = await dbConnections.connectMongoDB();
-  const hinosCollection = db.collection('hinos');
+  const hinosCollection = db.collection(COLLECTION_HARPA);
 
   const result = await hinosCollection.insertOne({
     numero,
@@ -18,7 +24,7 @@ export const insertHinoHarpa = async (numero, titulo, coro, verses) => {
 
 export const fetchHinosHarpa = async () => {
   const { client, db } = await dbConnections.connectMongoDB();
-  const hinosCollection = db.collection('hinos');
+  const hinosCollection = db.collection(COLLECTION_HARPA);
   const hinos = await hinosCollection.find({}).toArray();
 
   client.close();
@@ -27,7 +33,7 @@ export const fetchHinosHarpa = async () => {
 
 export const fetchHinoByNumero = async (numero) => {
   const { client, db } = await dbConnections.connectMongoDB();
-  const hinosCollection = db.collection('hinos');
+  const hinosCollection = db.collection(COLLECTION_HARPA);
   const hino = await hinosCollection.findOne({ numero });
 
   client.close();
@@ -36,7 +42,7 @@ export const fetchHinoByNumero = async (numero) => {
 
 export const fetchHinosGeral = async () => {
   const { client, db } = await dbConnections.connectMongoDB();
-  const hinosCollection = db.collection('hinario_geral');
+  const hinosCollection = db.collection(COLLECTION_HINARIO_GERAL);
   const hinario = await hinosCollection.find({}).toArray();
 
   client.close();
@@ -45,7 +51,7 @@ export const fetchHinosGeral = async () => {
 
 export const fetchHinoById = async (hinoId) => {
   const { client, db } = await dbConnections.connectMongoDB();
-  const hinosCollection = db.collection('hinario_geral');
+  const hinosCollection = db.collection(COLLECTION_HINARIO_GERAL);
   try {
     const hino = await hinosCollection.findOne({ _id: new ObjectId(hinoId) });
     if (!hino) throw new Error("Hino não encontrado no MongoDB");
@@ -60,7 +66,7 @@ export const fetchHinoById = async (hinoId) => {
 
 export const fetchHinoHarpaById = async (id) => {
   const { client, db } = await dbConnections.connectMongoDB();
-  const hinosCollection = db.collection('hinos');
+  const hinosCollection = db.collection(COLLECTION_HARPA);
   
   try {
     const hino = await hinosCollection.findOne({ _id: new ObjectId(id) });
